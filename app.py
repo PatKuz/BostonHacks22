@@ -72,8 +72,18 @@ def register():
     if request.method == 'GET':
         return render_template('register.html')
     else:
-        print(f'getting request: {request}')
-        print(f'request form: {request.form}')
+        # print(f'getting request: {request}')
+        # print(f'request form: {request.form}')
+        print("Request Received!")
+        print("Username: " + request.form['name'])
+        print("School: "+ request.form['school'])
+        print("Emergency Contact1: " + request.form['contact1'])
+        print("Emergency Contact2: " + request.form['contact2'])
+        uname = request.form['name']
+        school = request.form['school']
+        econtact1 = request.form['contact1']
+        econtact2 = request.form['contact2']
+        return None
 
 @app.route('/verify', methods=['GET', 'Post'])
 def verify():
