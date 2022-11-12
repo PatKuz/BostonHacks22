@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Righteous&display=swap');
+
+html {
+    overflow: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+::-webkit-scrollbar {
+    width: 0;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  transition: 1s;
+  background-color: #14213D;
+}
+
+div {
+    font-family: 'Righteous';
+    color: #ffffff;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
+  }
+
+.home-button {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.header {
+    font-size: 1.7rem;
+    margin-left: .6rem;
+}
+
+.info-text-parent {
+    text-align: center;
+    margin-top: 5rem;
+}
+
+.info-text {
+    font-size: 2rem;
+    display: inline-block;
+    color: #ffffff;
+    width: 50rem;
+    font-size: 2.5rem;
+    font-family: 'Poppins';
+    padding: 2rem;
+}
+
+.street-button {
+    background-color: #027018;
+    text-decoration: none;
+    padding: .3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-family: 'Poppins';
+    font-size: 1.8rem;
+    color: #ffffff;
+    border-radius: .3rem;
+    border: solid 2px #ffffff;
+}
+
+.street-button:hover {
+    background-color: #016114;
+    transition: .2s ease-in-out;
+}
+
+.bottom-half {
+    background-color: #E5E5E5;
+    width: 100%;
+    min-height: calc(100vh - 50px);
+    margin-top: 3rem;
+    text-align: center;
+    border-top: solid 4px #FCA311;
+}
+
+.bottom-text {
+    text-align: center;
+    color: #000000;
+    font-family: 'Poppins';
+}
+
+.mission {
+    text-align: left;
+    color: #000000;
+    font-size: 1.7rem;
+    margin-left: .6rem;
+    padding-top: .6rem;
+}
