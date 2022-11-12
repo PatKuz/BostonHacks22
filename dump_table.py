@@ -14,7 +14,8 @@ def dump_rows():
             f.write('{},{},{},{}\n'.format(user[0],user[1],user[2],user[3]))
         
 def cleanup():
-    if os.path.exists("temp.csv"):
-        os.remove("temp.csv")
-    else:
-        return
+    f = open('temp.csv', 'w')
+    f.write('NUMBER,NAME,SCHOOL,ECON\n')
+
+dump_rows()
+# cleanup()
