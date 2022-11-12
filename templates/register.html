@@ -26,7 +26,7 @@
                 </div>
             </td>
             <td style="margin-right:.6rem;font-size:1.3rem;padding:3rem;" class="register-form">
-                <form id="inputform" onsubmit="process_form(event)">
+                <form id="inputform" onsubmit="process_form()">
                     <div style="text-align:left;color:#000000;">
                         Name
                         (*):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -54,7 +54,7 @@
 
 
                     <div style="text-align:center;">
-                        <input id="register-submit" type="submit" value="Submit" style="display: inline-block;"
+                        <input id="register-submit" type="submit" value="submit" style="display: inline-block;"
                             class="street-button" />
                     </div>
                 </form>
@@ -67,9 +67,10 @@
 
 <script>
     
-    function process(event) {
+    function process_form() {
        
         console.log('fetching')
+        console.log('We are here')
         const url = "/register";
         fetch(url, {
             method : "POST",

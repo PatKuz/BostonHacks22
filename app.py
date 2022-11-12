@@ -73,6 +73,7 @@ def register():
         return render_template('register.html')
     else:
         print(f'getting request: {request}')
+        print(f'request form: {request.form}')
 
 @app.route('/verify', methods=['GET', 'Post'])
 def verify():
