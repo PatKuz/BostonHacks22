@@ -67,6 +67,13 @@ def sign_in():
 
         # need to verify number either way
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    else:
+        print(f'getting request: {request}')
+
 @app.route('/verify', methods=['GET', 'Post'])
 def verify():
     '''
@@ -109,7 +116,7 @@ def verify():
             print(res)
             if res == []:
                 #no use exists, send them to create account page  
-                return False
+                return render_template('register.html')
             else:
                 #there is a user so send them to logged in page
                 return True       

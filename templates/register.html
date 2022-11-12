@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="static/styles.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>Home | HighwayPatrol</title>
+    <link rel="icon" href="static/assets/Favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body onload="document.body.style.opacity='1'">
+    <div class="header" style="position:absolute;">
+        <a href="/templates/index.html" class="home-button">
+            HP
+        </a>
+    </div>
+    <table style="width:100%;height:100%">
+        <tr>
+            <td style="width:25rem;">
+                <div style="margin-left: .6rem;" class="register-text">
+                    First time? Welcome to HighwayPatrol! Let's get to know you...
+                </div>
+            </td>
+            <td style="margin-right:.6rem;font-size:1.3rem;padding:3rem;" class="register-form">
+                <form id="inputform" onsubmit="process_form(event)">
+                    <div style="text-align:left;color:#000000;">
+                        Name
+                        (*):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input id="name" type="text" name="name" style="display: inline-block" class="register-input"
+                            autofocus required />
+                    </div>
+
+                    <div style="text-align:left;color:#000000">
+                        School/University (*):&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input id="school" type="text" name="school" style="display: inline-block"
+                            class="register-input" required />
+                    </div>
+
+                    <div style="text-align:left;color:#000000;">
+                        Emergency Contact 1 (*):
+                        <input id="contact1" type="tel" name="contact1" style="display: inline-block"
+                            class="register-input" required />
+                    </div>
+
+                    <div style="text-align:left;color:#000000;">
+                        Emergency Contact 2:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input id="contact2" type="tel" name="contact2" style="display: inline-block"
+                            class="register-input" />
+                    </div>
+
+
+                    <div style="text-align:center;">
+                        <input id="register-submit" type="submit" value="Submit" style="display: inline-block;"
+                            class="street-button" />
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
+
+<script>
+    
+    function process(event) {
+       
+        console.log('fetching')
+        const url = "/register";
+        fetch(url, {
+            method : "POST",
+            body: new FormData(document.getElementById("inputform")),
+            // -- or --
+            // body : JSON.stringify({
+                // user : document.getElementById('user').value,
+                // ...
+            // })
+        }).then(
+            response => response.text() // .json(), etc.
+            // same as function(response) {return response.text();}
+        ).then(
+            html => console.log(html)
+        );
+
+
+    }
+
+
+
+</script>
