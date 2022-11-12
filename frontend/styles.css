@@ -90,7 +90,7 @@ td {
 .bottom-half {
     background-color: #E5E5E5;
     width: 100%;
-    min-height: 60%;
+    min-height: 50%;
     margin-top: 3rem;
     text-align: center;
     border-top: solid 4px #FCA311;
@@ -190,4 +190,15 @@ td {
     color: #000000;
     font-size: 8rem;
     display: inline-block;
+}
+
+.ran-out-of-names {
+    color: #000000;
+    font-size: 6rem;
+    border-left: solid 2px #000000;
+    border-right: solid 2px #000000;
+}
+
+.data {
+    font-size: 2rem;
 }

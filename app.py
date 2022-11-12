@@ -77,8 +77,23 @@ def register():
         print(f'here, {session["number"]}')
         return render_template('register.html')
     else:
-        print(f'getting request: {request}')
-        print(f'request form: {request.form}')
+        # print(f'getting request: {request}')
+        # print(f'request form: {request.form}')
+        print("Request Received!")
+        print("Username: " + request.form['name'])
+        print("School: "+ request.form['school'])
+        print("Emergency Contact1: " + request.form['contact1'])
+        uname = request.form['name']
+        school = request.form['school']
+        econ1 = request.form['contact1']
+        number = 7817388373
+        with conn.cursor() as cur:
+            # number='9788065553'
+            # sql = f'''SELECT * FROM USERS WHERE number = '5';'''
+            query = 'INSERT INTO Users (number, name, school, econ1, econ2) VALUES (\'{}\', \'{}\', \'{}\', \'{}\', \'{}\');'.format(number, uname, school, econ1, 'NULL')
+            cur.execute(query)
+            conn.commit()
+        return None
 
 @app.route('/verify', methods=['GET', 'Post'])
 def verify():
