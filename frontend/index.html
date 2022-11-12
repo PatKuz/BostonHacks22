@@ -15,7 +15,7 @@
 <body onload="document.body.style.opacity='1'">
 
     <div class="header">
-        <a href="#" class="home-button">
+        <a href="/frontend/index.html" class="home-button">
             HP
         </a>
     </div>
@@ -40,9 +40,11 @@
                 <hr style="width: 80%">
                 <div style="font-family:'Poppins';">Enter your phone number to get started!</div>
                 <form id="enter-num" onsubmit="process(event)" style="text-align: center; margin-top: 2%;">
-                    <input id="phone" id="phone" type="tel" name="phone" style="display: inline-block" class="phone-input" required/>
-                    <input id="enter" type="submit" value="Submit" style="display: inline-block" class="street-button" />
-                </form>            
+                    <input id="phone" id="phone" type="tel" name="phone" style="display: inline-block"
+                        class="phone-input" required />
+                    <input id="enter" type="submit" value="Submit" style="display: inline-block"
+                        class="street-button" />
+                </form>
             </div>
         </div>
 
@@ -53,9 +55,10 @@
                 <hr style="width: 80%">
                 <div style="font-family:'Poppins';">Please enter the verification code!</div>
                 <form id="verify" onsubmit="process_code(event)" style="text-align: center; margin-top: 2%;">
-                    <input id="code" type="text" name="code" style="display: inline-block" class="phone-input" required/>
+                    <input id="code" type="text" name="code" style="display: inline-block" class="phone-input"
+                        required />
                     <input type="submit" value="Verify" style="display: inline-block" class="street-button" />
-                </form>            
+                </form>
             </div>
         </div>
 
@@ -117,13 +120,13 @@
         const phoneNumber = phoneInput.getNumber();
         console.log("PHONE: " + phoneNumber);
         modal.style.display = "none";
-        phoneInputField.value='';
+        phoneInputField.value = '';
         v_modal.style.display = "block";
     }
 
     v_div.onclick = function () {
         v_modal.style.display = "none";
-        
+
     }
 
     window.onclick = function (event) {
