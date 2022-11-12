@@ -78,16 +78,14 @@ def register():
         print("Username: " + request.form['name'])
         print("School: "+ request.form['school'])
         print("Emergency Contact1: " + request.form['contact1'])
-        print("Emergency Contact2: " + request.form['contact2'])
         uname = request.form['name']
         school = request.form['school']
         econ1 = request.form['contact1']
-        econ2 = request.form['contact2']
         number = 7817388373
         with conn.cursor() as cur:
             # number='9788065553'
             # sql = f'''SELECT * FROM USERS WHERE number = '5';'''
-            query = 'INSERT INTO Users (number, name, school, econ1, econ2) VALUES (\'{}\', \'{}\', \'{}\', \'{}\', \'{}\');'.format(number, uname, school, econ1, econ2)
+            query = 'INSERT INTO Users (number, name, school, econ1, econ2) VALUES (\'{}\', \'{}\', \'{}\', \'{}\', \'{}\');'.format(number, uname, school, econ1, 'NULL')
             cur.execute(query)
             conn.commit()
         return None
