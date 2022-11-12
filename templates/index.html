@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="static/styles.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>Home | HighwayPatrol</title>
+    <link rel="icon" href="static/assets/Favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body onload="document.body.style.opacity='1'">
+
+    <div class="header">
+        <a href="#" class="home-button">
+            HP
+        </a>
+    </div>
+
+    <div class="info-text-parent">
+
+        <div class="info-text">
+            “Each year, drowsy driving accounts for about 100,000 crashes, 71,000 injuries and 1,550 fatalities" -
+            National Safety Council
+            <hr style="width: 100%;">
+            <div>
+                <button id="login" class="street-button" href="#register.html">
+                    Get Started
+                </button>
+            </div>
+        </div>
+
+        <div id="popup" class="popup">
+            <div class="login-text">
+                <div class="close">&times;</div>
+                <div class="popup-title">HighwayPatrol</div>
+                <hr style="width: 80%">
+                <div style="font-family:'Poppins';">Enter your phone number to get started!</div>
+                <form id="enter-num" onsubmit="process(event)" style="text-align: center; margin-top: 2%;">
+                    <input id="phone" id="phone" type="tel" name="phone" style="display: inline-block" class="phone-input" required/>
+                    <input id="enter" type="submit" value="Submit" style="display: inline-block" class="street-button" />
+                </form>            
+            </div>
+        </div>
+
+        <div id="popup-verify" class="popup">
+            <div class="login-text">
+                <div id="close" class="close">&times;</div>
+                <div class="popup-title">HighwayPatrol</div>
+                <hr style="width: 80%">
+                <div style="font-family:'Poppins';">Please enter the verification code!</div>
+                <form id="verify" onsubmit="process_code(event)" style="text-align: center; margin-top: 2%;">
+                    <input id="code" type="text" name="code" style="display: inline-block" class="phone-input" required/>
+                    <input type="submit" value="Verify" style="display: inline-block" class="street-button" />
+                </form>            
+            </div>
+        </div>
+
+        <div class="bottom-half">
+            <div class="mission">
+                The Mission.
+            </div>
+            .<div style="display: inline-block;width:80%;margin-top:2rem;">
+                <div class="bottom-text">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                    labore et dolore magna aliqua. Pharetra convallis posuere morbi leo. Faucibus turpis in eu mi.
+                    Id eu nisl nunc mi. Elit pellentesque habitant morbi tristique senectus et. Et ultrices neque
+                    ornare aenean euismod elementum nisi. Urna et pharetra pharetra massa massa ultricies mi quis.
+                    Massa tincidunt dui ut ornare lectus sit. Et odio pellentesque diam volutpat. Viverra nam libero
+                    justo laoreet sit. Posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Elementum
+                    nibh tellus molestie nunc non blandit massa enim. Imperdiet proin fermentum leo vel orci porta
+                    non. Commodo odio aenean sed adipiscing diam donec adipiscing tristique. Curabitur vitae nunc
+                    sed velit dignissim sodales ut eu. Posuere sollicitudin aliquam ultrices sagittis.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    var modal = document.getElementById("popup");
+    var btn = document.getElementById("login");
+    var div = document.getElementsByClassName("close")[0];
+    var v_modal = document.getElementById("popup-verify");
+    var v_div = document.getElementsByClassName("close")[1];
+
+
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    div.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    const phoneInputField = document.querySelector("#phone");
+    const phoneInput = window.intlTelInput(phoneInputField, {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+    function process(event) {
+        event.preventDefault();
+
+        const phoneNumber = phoneInput.getNumber();
+        console.log("PHONE: " + phoneNumber);
+        var xhr = new XMLHttpRequest();
+        console.log("Should be sending request")
+        xhr.open("POST", '/sign_in', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        var params = 'phone='+phoneNumber;
+        xhr.send(params);
+
+        modal.style.display = "none";
+        // phoneInputField.value='';
+        v_modal.style.display = "block";
+    }
+
+    v_div.onclick = function () {
+        v_modal.style.display = "none";
+        
+    }
+
+    window.onclick = function (event) {
+        if (event.target == v_modal) {
+            v_modal.style.display = "none";
+        }
+    }
+
+
+    const codeInputField = document.querySelector("#code");
+
+    function process_code(event) {
+        event.preventDefault();
+
+        const codeNumber = codeInputField.value;
+        codeInputField.value = '';
+        const phoneNumber = phoneInput.getNumber();
+
+        console.log("Phone number: " + phoneNumber);
+
+        console.log("CODE: " + codeNumber);
+        var xhr = new XMLHttpRequest();
+        console.log("Should be sending request")
+        xhr.open("POST", '/verify', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        var params = 'pnum='+phoneNumber + '&code='+codeNumber;
+        xhr.send(params);
+        
+        phoneInputField.value='';
+        codeInputField = '';
+    }
+</script>

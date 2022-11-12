@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import yaml
 import psycopg2
 from auth import start_verify, check_verify
@@ -13,7 +13,7 @@ conn = psycopg2.connect(creds["DATABASE_URL"])
 
 @app.route('/')
 def test():
-    print('got a request here')
+    return render_template('index.html')
 
 @app.route('/sign_in', methods=['GET', 'POST'])
 def sign_in():
@@ -36,7 +36,9 @@ def sign_in():
         # number = ret['number']
 
         number = request.values.get('phone')
-        print(request.values)
+        print(f'request: {request}')
+        print(f'request form: {request.form}')
+        print(f'request.values: {request.values}')
         print(number)
 
         if not verify_phone(number):
@@ -83,14 +85,13 @@ def verify():
     number = request.values.get('pnum')
     print('the number is')
     print(number)
-    number = '9788065553'
+    # number = '9788065553'
     print(f'number: {number}')
     code = request.values.get('code')
+    print(f'code: {code}')
 
-    # status = check_verify(number, code)
-    status = 'approved'
+    status = check_verify(number, code)
 
-    
 
     print(f'status: {status}')
     print(f'type: {type(status)}')
@@ -99,13 +100,19 @@ def verify():
         print(f'the number was approved, checking to see if they already exist')
         #check to see if the phone number is already associated with a user account
         with conn.cursor() as cur:
-            number='9788065553'
-            sql = f'''SELECT * FROM USERS WHERE number = '5';'''
-            # sql = f'''SELECT * FROM USERS WHERE number={str(number)};'''
+            # number='9788065553'
+            # sql = f'''SELECT * FROM USERS WHERE number = '5';'''
+            sql = f'''SELECT * FROM USERS WHERE number='{number}';'''
             cur.execute(sql)
             res = cur.fetchall()
             conn.commit()
             print(res)
+            if res == []:
+                #no use exists, send them to create account page  
+                return False
+            else:
+                #there is a user so send them to logged in page
+                return True       
     else:
         #not approved
         print(status)
@@ -140,6 +147,7 @@ def verify():
 
 def verify_phone(num):
     print('calling the verify method')
+    num = num[2:]
     import re
     regex = re.compile(r'^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$')
     return regex.search(str(num))
