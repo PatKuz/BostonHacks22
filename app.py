@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for, redirect, session
 import yaml
 import psycopg2
 from auth import start_verify, check_verify
@@ -7,6 +7,8 @@ from auth import start_verify, check_verify
 creds = yaml.safe_load(open("creds.yaml", "r"))
 
 app = Flask(__name__)
+
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT' #needed to use sessions
 
 
 conn = psycopg2.connect(creds["DATABASE_URL"])
@@ -45,6 +47,8 @@ def sign_in():
             print('could not verify number')
             return False
 
+        # session['number'] = number
+        # print(f'set the session number, {session["number"]}')
         status = start_verify(number)
         print(f'status: {status}')
 
@@ -70,6 +74,7 @@ def sign_in():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
+        print(f'here, {session["number"]}')
         return render_template('register.html')
     else:
         print(f'getting request: {request}')
@@ -91,6 +96,7 @@ def verify():
 
     # new = request.values.get('new')
     number = request.values.get('pnum')
+    # number = session['number']
     print('the number is')
     print(number)
     # number = '9788065553'
@@ -117,8 +123,13 @@ def verify():
             print(res)
             if res == []:
                 #no use exists, send them to create account page  
+                print(f'the user does not exist')
+                print('rendering register')
+                # session['number'] = number #store number as session variable
                 return render_template('register.html')
+                # return redirect(url_for('register'))
             else:
+                print(f'The user exists, res: {res}')
                 #there is a user so send them to logged in page
                 return True       
     else:

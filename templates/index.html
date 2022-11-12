@@ -52,8 +52,10 @@
                 <div class="popup-title">HighwayPatrol</div>
                 <hr style="width: 80%">
                 <div style="font-family:'Poppins';">Please enter the verification code!</div>
-                <form id="verify" onsubmit="process_code(event)" style="text-align: center; margin-top: 2%;">
+                <form id="verify" action="/verify" style="text-align: center; margin-top: 2%;">
                     <input id="code" type="text" name="code" style="display: inline-block" class="phone-input" required/>
+                    <input id="pnum" type="text" name="pnum" class="phone-input" hidden="True"/>
+                    <!-- <input id="pnum" type="tel" name="pnum" value="" hidden="False"/> -->
                     <input type="submit" value="Verify" style="display: inline-block" class="street-button" />
                 </form>            
             </div>
@@ -115,6 +117,7 @@
         event.preventDefault();
 
         const phoneNumber = phoneInput.getNumber();
+        document.getElementById("pnum").setAttribute('value' , phoneNumber)
         console.log("PHONE: " + phoneNumber);
         var xhr = new XMLHttpRequest();
         console.log("Should be sending request")
@@ -149,6 +152,8 @@
         codeInputField.value = '';
         const phoneNumber = phoneInput.getNumber();
 
+        
+
         console.log("Phone number: " + phoneNumber);
 
         console.log("CODE: " + codeNumber);
@@ -158,6 +163,8 @@
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         var params = 'pnum='+phoneNumber + '&code='+codeNumber;
         xhr.send(params);
+
+
         
         phoneInputField.value='';
         codeInputField = '';
