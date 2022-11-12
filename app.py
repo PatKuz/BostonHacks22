@@ -1,6 +1,7 @@
 from flask import Flask, request
 import yaml
 import psycopg2
+from auth import start_verify, check_verify
 
 
 creds = yaml.safe_load(open("creds.yaml", "r"))
@@ -9,12 +10,6 @@ app = Flask(__name__)
 
 
 conn = psycopg2.connect(creds["DATABASE_URL"])
-
-# with conn.cursor() as cur:
-#     cur.execute("SELECT now()")
-#     res = cur.fetchall()
-#     conn.commit()
-#     print(res)
 
 @app.route('/')
 def test():
@@ -46,18 +41,13 @@ def sign_in():
 
         if not verify_phone(number):
             print('could not verify number')
+            return False
+
+        status = start_verify(number)
+        print(f'status: {status}')
 
         #for a test try to insert number into sql table
-        with conn.cursor() as cur:
-            id = 43
-            name = 'Pat'
-            # sql = f'''INSERT into Users values('{id}','{name}','{number}');'''
-            sql = '''SELECT * FROM Users;'''
-            # sql = '''CREATE TABLE Users(id int,name varchar, number varchar);'''
-            cur.execute(sql)
-            res = cur.fetchall()
-            conn.commit()
-            print(res)
+        return True
 
 
         # Check to see if the number is in the data base
@@ -75,6 +65,77 @@ def sign_in():
 
         # need to verify number either way
 
+@app.route('/verify', methods=['GET', 'Post'])
+def verify():
+    '''
+    takes in the number and the code and either takes them into the logged
+    in page if they already have an account or brings them to the create an account
+    page
+    '''
+    if request.method == 'GET':
+        x = 1
+        # return render_template('verify.html', new=True, pnum=6)
+
+
+    print(request.values)
+
+    # new = request.values.get('new')
+    number = request.values.get('pnum')
+    print('the number is')
+    print(number)
+    number = '9788065553'
+    print(f'number: {number}')
+    code = request.values.get('code')
+
+    # status = check_verify(number, code)
+    status = 'approved'
+
+    
+
+    print(f'status: {status}')
+    print(f'type: {type(status)}')
+
+    if status == 'approved':
+        print(f'the number was approved, checking to see if they already exist')
+        #check to see if the phone number is already associated with a user account
+        with conn.cursor() as cur:
+            number='9788065553'
+            sql = f'''SELECT * FROM USERS WHERE number = '5';'''
+            # sql = f'''SELECT * FROM USERS WHERE number={str(number)};'''
+            cur.execute(sql)
+            res = cur.fetchall()
+            conn.commit()
+            print(res)
+    else:
+        #not approved
+        print(status)
+        print('not aproved')
+
+
+    # print('is a new user')
+    # print(new)
+
+    # temp_ret = temp_codes.document(number).get().to_dict()
+    # actual_num = temp_ret['number']
+
+    # if str(actual_num) == str(code):
+    #     print('it worked')
+    #     if new == 'True':
+    #         # return form
+    #         return render_template('survey.html', pnum=number)
+    #     else:
+    #         print('is not a new user')
+    #         # return whatever page we show people who already 
+    #         # return render_template('results.html') #will need to give it more 0
+    #         return get_group(number)
+
+    # else:
+    #     print('actual code')
+    #     print(actual_num)
+    #     print('inputed code')
+    #     print(code)
+    #     print('wrong code')
+    #     return render_template('verify.html', new=new, pnum=number)
 
 
 def verify_phone(num):
