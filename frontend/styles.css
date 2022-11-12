@@ -90,7 +90,7 @@ td {
 .bottom-half {
     background-color: #E5E5E5;
     width: 100%;
-    min-height: calc(100vh - 50px);
+    min-height: 60%;
     margin-top: 3rem;
     text-align: center;
     border-top: solid 4px #FCA311;
@@ -184,4 +184,10 @@ td {
     outline: none;
     border-radius: 3px;
     margin: 2rem;
+}
+
+.welcome-text {
+    color: #000000;
+    font-size: 8rem;
+    display: inline-block;
 }
