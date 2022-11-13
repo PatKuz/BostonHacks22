@@ -114,7 +114,8 @@ def updateLeaderboard(hoursDriven, oldTime, number):
         conn.commit()
         print(result)
         above = result[0][0]
-        toSend = f'You added {hoursDriven} time of safe driving. There are now {above} people ahead of you on the leaderboard! Keep it up!'
+        hoursDriven /= 60000
+        toSend = f'You added {hoursDriven} seconds of safe driving. There are now {above} people ahead of you on the leaderboard! Keep it up!'
         send_message(toSend, number)
 
 def send_warning(num):
@@ -136,7 +137,7 @@ def send_warning(num):
         print(f'name: {name}, econ1: {econ1}')
         econ1='4845385080'
 
-        to_send = f'We have detect that {name} is potentially driving drowsy, you may want to contact them to make sure that they are not making bad decisions'
+        to_send = f'We have detected that {name} is potentially driving drowsy, you may want to contact them to make sure that they are not making bad decisions'
         send_message(to_send, econ1)
     
 
@@ -329,8 +330,25 @@ def verify():
 
 @app.route('/leaderboard', methods=['GET'])
 def leaderboard():
-    dr()
-    return render_template('leaderboard.html')
+    with conn.cursor() as c:
+        c.execute(f'SELECT * FROM LEADERBOARD ORDER BY time DESC LIMIT 5;')
+        users = c.fetchall()
+        conn.commit()
+        top5 = {1:{},2:{},3:{},4:{},5:{}}
+        i = 1
+        for user in users:
+            try:
+                top5[i] = {'name':user[1],'drives':user[2],'time':user[3]}
+            except:
+                top5[i] = {'name':'','drives':'','time':''}
+            i+=1
+            
+        one = top5[1]
+        two = top5[2]
+        three = top5[3]
+        four = top5[4]
+        five = top5[5]
+    return render_template('leaderboard.html',one=one,two=two,three=three,four=four,five=five)
 
 
     # print('is a new user')

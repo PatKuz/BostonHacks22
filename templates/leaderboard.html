@@ -13,7 +13,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 
-<body onload="getData()" style="background-color:#FCA311;">
+<body onload="document.body.style.opacity='1';" style="background-color:#FCA311;">
     <div class="header" style="position:absolute;">
         <a href="/landing" class="home-button" style="color:#000000">
             HP
@@ -26,36 +26,79 @@
             <div style="color: #000000;font-size: 6rem;">
                 Leaderboard
             </div>
-            <div id="data" class="data">
-
+            <hr style="color:#000000;width:90%">
+            <div style="width:90%;display: inline-block;margin-top:2rem;">
+                <table style="width:100%;">
+                    <tr>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.5rem;">
+                            Name
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.5rem;">
+                            School
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.5rem;">
+                            Hours Driven
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ one.name }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ one.drives }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ one.time }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ two.name }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ two.drives }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ two.time }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ three.name }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ three.drives }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ three.time }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ four.name }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ four.drives }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ four.time }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ five.name }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ five.drives }}
+                        </td>
+                        <td style="width:33%;color:#000000;font-family:'Poppins';font-size:1.2rem">
+                            {{ five.time }}
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
 </body>
 
 </html>
-
-<script>
-    function getData() {
-        document.body.style.opacity='1';
-        $.get('../temp.csv', function (data) {
-            console.log("here")
-            var html = '<table style="display:inline-block;">';
-            var rows = data.split("\n");
-            rows.pop();
-            console.log(rows);
-            rows.forEach(function getvalues(ourrow) {
-                html += "<tr>";
-                var columns = ourrow.split(",");
-                html += "<td>" + columns[0] + "</td>";
-                html += "<td>" + columns[1] + "</td>";
-                html += "<td>" + columns[2] + "</td>";
-                html += "<td>" + columns[3] + "</td>";
-                html += "</tr>";
-            })
-            html += "</table>";
-            console.log(html);
-            $('#data').append(html);
-        });
-    }
-</script>
