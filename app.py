@@ -9,7 +9,9 @@ from flask import Response as FlaskResponse
 from flask import jsonify
 import json
 from dump_table import dump_rows as dr
-
+import numpy as np
+import cv2
+from tensorflow import keras
 
 creds = yaml.safe_load(open("creds.yaml", "r"))
 
@@ -115,6 +117,16 @@ def register():
             conn.commit()
         return None
 
+detector = cv2.FaceDetectorYN.create(
+    'face_detection_yunet_2022mar.onnx',
+    "",
+    (640, 480),
+    0.9, # score threshold
+    0.3, # nms threshold
+    5000 # top k
+)
+eyesModel = keras.models.load_model('eyesOpenClose.h5')
+yawnModel = keras.models.load_model('yawn.h5')
 @app.route('/live', methods=['POST'])
 def live():
     #take in the image and compare it to the model
@@ -131,12 +143,40 @@ def live():
     # print(f'ret: {ret}')
     # print(f'{type(request.json["imageSrc"])}')
     b = (request.json['imageSrc'])
-
     z = b[b.find('/9'):]
-    im = Image.open(io.BytesIO(base64.b64decode(z))).save('result.jpg')
-    print(f'saved')
+    nparr = np.fromstring(base64.b64decode(z), np.uint8)
+    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    frame = cv2.flip(frame, 1) # if your camera reverses your image
+    faces = detector.detect(frame)[1]
+    
+    if faces is not None:
+        face_boxes = []
+        for face in faces:
+            x,y,w,h = face[:4].astype('int')
+            face_boxes.append([x,y,x+w,y+h])
+            
+        lx,ly,la,lb = sorted([[x,y,a,b,(a-x)*(b-y)] for x,y,a,b in face_boxes], key=lambda x: x[4])[-1][:-1]
+        face_array = frame[max(0,ly):min(lb,frame.shape[0]), max(0,lx):min(la,frame.shape[1])]
+        face_array = cv2.resize(face_array, (100,100)).reshape(-1, 100, 100, 3)
 
-    print('we are here')
+        yawn_pred = yawnModel.predict(face_array/255, verbose=0).item()
+        yawn_text = "Mouth: Open" if yawn_pred < 0.2 else "Mouth: Closed"
+        cv2.putText(frame, yawn_text, (frame.shape[1]-250,frame.shape[0]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+
+        eyes_pred = eyesModel.predict(face_array/255, verbose=0).item()
+        eyes_text = "Eyes: Closed" if eyes_pred < 0.50 else "Eyes: Open"
+        cv2.putText(frame, eyes_text, (25,frame.shape[0]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+
+        frame = cv2.rectangle(frame, (lx, ly), (la, lb), (0, 255, 0), 2)
+        
+
+        retval, buffer = cv2.imencode('.jpg', frame)
+
+        # z = base64.b64encode(frame.tobytes())
+        # b = "data:image/jpeg;base64,/9j/" + z.decode("utf-8") 
+        b = base64.b64encode(buffer)
+        b = "data:image/jpeg;base64," + b.decode("utf-8") 
+
     response = {
         'asleep': True,
         'image': b,
