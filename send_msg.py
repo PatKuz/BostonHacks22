@@ -18,5 +18,6 @@ def send_message(messageToSend, toNum):
             from_=fromNum,
             to= "+1" + str(toNum),
         )
+    print(f'sent message to: {toNum}')
 
 # send_message("test message", 7817388373)
