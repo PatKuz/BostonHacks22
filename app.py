@@ -238,6 +238,9 @@ def live():
         
 
         retval, buffer = cv2.imencode('.jpg', frame)
+
+        # z = base64.b64encode(frame.tobytes())
+        # b = "data:image/jpeg;base64,/9j/" + z.decode("utf-8") 
         b = base64.b64encode(buffer)
         b = "data:image/jpeg;base64," + b.decode("utf-8") 
 
@@ -322,8 +325,25 @@ def verify():
 
 @app.route('/leaderboard', methods=['GET'])
 def leaderboard():
-    dr()
-    return render_template('leaderboard.html')
+    with conn.cursor() as c:
+        c.execute(f'SELECT * FROM LEADERBOARD ORDER BY time DESC LIMIT 5;')
+        users = c.fetchall()
+        conn.commit()
+        top5 = {1:{},2:{},3:{},4:{},5:{}}
+        i = 1
+        for user in users:
+            try:
+                top5[i] = {'name':user[1],'drives':user[2],'time':user[3]}
+            except:
+                top5[i] = {'name':'','drives':'','time':''}
+            i+=1
+            
+        one = top5[1]
+        two = top5[2]
+        three = top5[3]
+        four = top5[4]
+        five = top5[5]
+    return render_template('leaderboard.html',one=one,two=two,three=three,four=four,five=five)
 
 
     # print('is a new user')
