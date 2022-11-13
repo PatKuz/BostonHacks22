@@ -73,7 +73,14 @@ def sign_in():
 
 @app.route('/landing', methods = ["GET"])
 def landing():
-    return render_template('landing.html')
+    table_name = 'USERS'
+    number = str(session['number'])
+    with conn.cursor() as c:
+        c.execute(f'SELECT * FROM {table_name} WHERE number=\'{number}\';')
+        user = c.fetchall()
+        conn.commit()
+        name = user[1]
+    return render_template('landing.html',name=name)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
