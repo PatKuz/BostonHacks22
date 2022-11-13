@@ -1,9 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
 import Webcam from "react-webcam";
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useReducer } from 'react'
 import axios from "axios"
 import React from 'react';
+import Timer from 'react-timer-wrapper';
+import Timecode from 'react-timecode';
+
 
 const videoConstraints = {
   width: 1920,
@@ -38,6 +41,9 @@ function App() {
   const [webcam, setWebcam] = React.useState(true);
   const [asleep, setAsleep] = React.useState(false);
   const [done, setDone] = React.useState(false);
+  const timer = React.useRef(null)
+  // const [elapsedTime, setElapsedTime] = React.useState(0)
+  // let elapsedTime = 0
   
 
   // const soundTheAlarms = (() => {
@@ -75,10 +81,11 @@ function App() {
   //   }
   // }, [imgSrc])
 
-
-
   const capture = React.useCallback(() => {
     console.log('running: ' + running)
+    // console.log('elapsedTime: ' + elapsedTime)
+    // elapsedTime += 1
+   
       if((webcamRef.current == null)){
         return;
       }
@@ -111,8 +118,10 @@ function App() {
   const endCapture = () => {
     setWebcam(false);
     setDone(true);
+    const elapsedTime = timer.current.state.time
+    console.log(elapsedTime)
     axios.post('/end_drive', {
-      'hoursDriven': 1000,
+      'hoursDriven': elapsedTime,
     }).then((response) => {
       console.log(response)
     }).catch((error) => {
@@ -152,7 +161,12 @@ function App() {
           {!done &&
           <div>
             <button onClick={endCapture} className="street-button">End Drive</button>
-          </div> }
+            <Timer active duration={null} ref={timer}>
+            <Timecode />
+          </Timer>
+          </div>
+           
+          }
           {done &&
           <a href='http://localhost:4000/landing'>
           <div>
