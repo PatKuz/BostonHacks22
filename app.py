@@ -122,8 +122,8 @@ def verify():
     print(request.values)
 
     # new = request.values.get('new')
-    number = request.values.get('pnum')
-    # number = session['number']
+    number = request.values.get('pnum')[2:]
+    session['number'] = number
     print('the number is')
     print(number)
     # number = '9788065553'
@@ -153,8 +153,8 @@ def verify():
                 print(f'the user does not exist')
                 print('rendering register')
                 # session['number'] = number #store number as session variable
-                return render_template('register.html')
-                # return redirect(url_for('register'))
+                # return render_template('register.html')
+                return redirect(url_for('register'))
             else:
                 print(f'The user exists, res: {res}')
                 #there is a user so send them to logged in page
