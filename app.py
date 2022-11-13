@@ -90,7 +90,7 @@ def register():
         with conn.cursor() as cur:
             # number='9788065553'
             # sql = f'''SELECT * FROM USERS WHERE number = '5';'''
-            query = 'INSERT INTO Users (number, name, school, econ1, econ2) VALUES (\'{}\', \'{}\', \'{}\', \'{}\', \'{}\');'.format(number, uname, school, econ1, 'NULL')
+            query = 'INSERT INTO Users (number, name, school, econ1) VALUES (\'{}\', \'{}\', \'{}\', \'{}\');'.format(number, uname, school, econ1)
             cur.execute(query)
             conn.commit()
         return None
