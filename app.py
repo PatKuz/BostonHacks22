@@ -114,7 +114,8 @@ def updateLeaderboard(hoursDriven, oldTime, number):
         conn.commit()
         print(result)
         above = result[0][0]
-        toSend = f'You added {hoursDriven} hours of safe driving. There are now {above} people ahead of you on the leaderboard! Keep it up!'
+        hoursDriven /= 60000
+        toSend = f'You added {hoursDriven} seconds of safe driving. There are now {above} people ahead of you on the leaderboard! Keep it up!'
         send_message(toSend, number)
 
 def send_warning(num):
