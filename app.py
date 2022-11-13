@@ -78,8 +78,9 @@ def landing():
     with conn.cursor() as c:
         c.execute(f'SELECT * FROM {table_name} WHERE number=\'{number}\';')
         user = c.fetchall()
+        # print(user)
         conn.commit()
-        name = user[1]
+        name = user[0][1]
     return render_template('landing.html',name=name)
 
 @app.route('/register', methods=['GET', 'POST'])
