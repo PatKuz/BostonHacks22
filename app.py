@@ -97,6 +97,7 @@ def updateLeaderboard(hoursDriven, oldTime, number):
     with conn.cursor() as c:
         table_name = 'LEADERBOARD'
         c.execute(f'UPDATE {table_name} SET time = \'{updatedHours}\'WHERE number=\'{number}\';')
+        c.execute(f'UPDATE {table_name} SET numdrives = numdrives + 1 WHERE number=\'{number}\';')
         # c.execute(f'UPDATE {table_name} SET numdrives = \'{updatedHours}\'WHERE number=\'{number}\';')
         # time = c.fetchall()
         # print(user)
