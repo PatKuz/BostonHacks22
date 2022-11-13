@@ -37,7 +37,7 @@ function App() {
   const [running, setRunning] = React.useState(false);
   const [webcam, setWebcam] = React.useState(true);
   const [asleep, setAsleep] = React.useState(false);
-
+  const [done, setDone] = React.useState(false);
   
 
   // const soundTheAlarms = (() => {
@@ -106,6 +106,7 @@ function App() {
 
   const endCapture = () => {
     setWebcam(false);
+    setDone(true);
     axios.post('/end_drive', {
       'hoursDriven': 1000,
     }).then((response) => {
@@ -144,10 +145,15 @@ function App() {
           <div>
           {asleep && <p>We have detected you are falling asleep</p> }
         </div>
-          
+          {!done &&
           <div>
             <button onClick={endCapture} className="street-button">End Drive</button>
-          </div>
+          </div> }
+          {done &&
+          <a href='http://localhost:4000/landing'>
+          <div>
+            <button className="street-button">Go Home</button>
+          </div></a> }
         </div>
         </div>
       </header>
