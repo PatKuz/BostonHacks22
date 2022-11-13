@@ -86,7 +86,7 @@ def register():
         uname = request.form['name']
         school = request.form['school']
         econ1 = request.form['contact1']
-        number = 7817388373
+        number = session['number']
         with conn.cursor() as cur:
             # number='9788065553'
             # sql = f'''SELECT * FROM USERS WHERE number = '5';'''
@@ -94,6 +94,17 @@ def register():
             cur.execute(query)
             conn.commit()
         return None
+
+@app.route('/live', methods=['POST'])
+def live():
+    #take in the image and compare it to the model
+
+    print(f'request: {request}')
+    print(f'request form: {request.form}')
+    print(f'request.values: {request.values}')
+    print(f'request json {request.get_json()}' )
+    print('we are here')
+    return True
 
 @app.route('/verify', methods=['GET', 'Post'])
 def verify():
