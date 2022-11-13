@@ -170,11 +170,14 @@ def verify():
             else:
                 print(f'The user exists, res: {res}')
                 #there is a user so send them to logged in page
-                return redirect(url_for('landing'))      
-    else:
+                return redirect(url_for('landing'))   
+    elif status == 'pending':
         #not approved
         print(status)
-        print('not aproved')
+        print('not approved')
+        return render_template('index.html')
+    else:
+        print('.')     
 
 
     # print('is a new user')
