@@ -13,7 +13,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 </head>
 
-<body onload="document.body.style.opacity='1'" style="background-color:#FCA311;">
+<body onload="getData()" style="background-color:#FCA311;">
     <div class="header" style="position:absolute;">
         <a href="/landing" class="home-button" style="color:#000000">
             HP
@@ -21,8 +21,11 @@
     </div>
 
     <div style="text-align:center;width:100%;height:100%;">
-        <div style="display:inline-block;height:100%;width:60%;background-color:#E5E5E5;" class="ran-out-of-names">
-            Leaderboard
+        <div
+            style="display:inline-block;height:100%;width:60%;background-color:#E5E5E5;border-left: solid 2px #000000;border-right: solid 2px #000000;">
+            <div style="color: #000000;font-size: 6rem;">
+                Leaderboard
+            </div>
             <div id="data" class="data">
 
             </div>
@@ -33,22 +36,26 @@
 </html>
 
 <script>
-    $.get('../temp.csv', function (data) {
-        var html = '<table style="display:inline-block;">';
-        var rows = data.split("\n");
-        rows.pop();
-        console.log(rows);
-        rows.forEach(function getvalues(ourrow) {
-            html += "<tr>";
-            var columns = ourrow.split(",");
-            html += "<td>" + columns[0] + "</td>";
-            html += "<td>" + columns[1] + "</td>";
-            html += "<td>" + columns[2] + "</td>";
-            html += "<td>" + columns[3] + "</td>";
-            html += "</tr>";
-        })
-        html += "</table>";
-        console.log(html);
-        $('#data').append(html);
-    });
+    function getData() {
+        document.body.style.opacity='1';
+        $.get('../temp.csv', function (data) {
+            console.log("here")
+            var html = '<table style="display:inline-block;">';
+            var rows = data.split("\n");
+            rows.pop();
+            console.log(rows);
+            rows.forEach(function getvalues(ourrow) {
+                html += "<tr>";
+                var columns = ourrow.split(",");
+                html += "<td>" + columns[0] + "</td>";
+                html += "<td>" + columns[1] + "</td>";
+                html += "<td>" + columns[2] + "</td>";
+                html += "<td>" + columns[3] + "</td>";
+                html += "</tr>";
+            })
+            html += "</table>";
+            console.log(html);
+            $('#data').append(html);
+        });
+    }
 </script>

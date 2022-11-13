@@ -9,6 +9,6 @@ def dump_rows():
         users = c.fetchall()
         conn.commit()
         f = open('temp.csv', 'w')
-        f.write('NAME,SCHOOL,SCHOOL,ECON\n')
+        f.write('NAME,SCHOOL,NUM_DRIVES,TIME\n')
         for user in users:
             f.write('{},{},{},{}\n'.format(user[1],user[2],user[3],user[4]))
