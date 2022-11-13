@@ -36,7 +36,8 @@ function App() {
   const [imgSrc, setImgSrc] = React.useState(null);
   const [running, setRunning] = React.useState(false);
   const [webcam, setWebcam] = React.useState(true);
-
+  const [asleep, setAsleep] = React.useState(false);
+  const [done, setDone] = React.useState(false);
   
 
   // const soundTheAlarms = (() => {
@@ -50,6 +51,13 @@ function App() {
       // soundTheAlarms()
     }
   }, [setImgSrc])
+
+  const endCaptureBad = () => {
+    console.log('Ending the capture')
+    setWebcam(false);
+    setAsleep(true);
+  }
+
 
   const turningOffRunning = React.useCallback(async () => {
     setRunning(false);
@@ -67,6 +75,8 @@ function App() {
   //   }
   // }, [imgSrc])
 
+
+
   const capture = React.useCallback(() => {
     console.log('running: ' + running)
       console.log('in loop')
@@ -76,7 +86,6 @@ function App() {
       // setImgSrc(imageSrc);
   
       axios.post('/live', {
-        name: 'Conor',
         imageSrc: imageSrc,
       })
       .then((response) => {
@@ -86,7 +95,9 @@ function App() {
         console.log('asleep')
         console.log(asleep)
         const imageSrc = response['data']['image']
-        updateStuff(asleep, imageSrc)
+        setImgSrc(imageSrc)
+        if(asleep)
+          endCaptureBad(asleep, imageSrc)
       }).catch((error) => {
         console.log('got an error')
         console.log(error)
@@ -95,8 +106,18 @@ function App() {
 
   const endCapture = () => {
     setWebcam(false);
+    setDone(true);
+    axios.post('/end_drive', {
+      'hoursDriven': 1000,
+    }).then((response) => {
+      console.log(response)
+    }).catch((error) => {
+      console.log('got an error')
+      console.log(error)
+    })
   };
 
+  
   useEffect(() => {
     const interval = setInterval(() => capture(), 600);
     return () => clearInterval(interval);
@@ -106,6 +127,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         {/* <button onClick={capture}>Capture photo</button> */}
+        
          <div className="roon-wrap">
           <div className="ran-out-of-names">
               We're Live!
@@ -119,10 +141,19 @@ function App() {
             />)
           }
           </div>
-          
+
+          <div>
+          {asleep && <p>We have detected you are falling asleep</p> }
+        </div>
+          {!done &&
           <div>
             <button onClick={endCapture} className="street-button">End Drive</button>
-          </div>
+          </div> }
+          {done &&
+          <a href='http://localhost:4000/landing'>
+          <div>
+            <button className="street-button">Go Home</button>
+          </div></a> }
         </div>
         </div>
       </header>
