@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Righteous&display=swap');
+
 .App {
   text-align: center;
 }
@@ -14,14 +16,17 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #FCA311;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: #000000;
+  margin:0;
+  padding:0;
+  height:100%;
 }
 
 .App-link {
@@ -35,4 +40,42 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.street-button {
+  background-color: #027018;
+  text-decoration: none;
+  padding: .3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-family: 'Poppins';
+  font-size: 1.8rem;
+  color: #ffffff;
+  border-radius: .3rem;
+  border: solid 2px #ffffff;
+  cursor: pointer;
+  bottom: 0;
+  margin-top: 2%;
+}
+
+.street-button:hover {
+  background-color: #016114;
+  transition: .2s ease-in-out;
+}
+
+.ran-out-of-names {
+  color: #000000;
+  font-size: 6rem;
+  font-family: 'Righteous';
+}
+
+.roon-wrap {
+  min-width: 60%;
+  height: 100%;
+  border-right: solid 2px #000000;
+  border-left: solid 2px #000000;
+  background-color: #E5E5E5;
+  display: flex;
+  flex-direction: column;
+  z-index: 0;
 }

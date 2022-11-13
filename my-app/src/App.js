@@ -98,7 +98,7 @@ function App() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => capture(), 1000);
+    const interval = setInterval(() => capture(), 600);
     return () => clearInterval(interval);
   }, []);
 
@@ -106,17 +106,28 @@ function App() {
     <div className="App">
       <header className="App-header">
         {/* <button onClick={capture}>Capture photo</button> */}
-        <div style={{marginTop: '50px', marginBottom: '20000px'}}>
+         <div className="roon-wrap">
+          <div className="ran-out-of-names">
+              We're Live!
+          </div>
+          <div style={{marginTop: '50px', marginBottom: '2000000px'}}>
+          
+          <div className="vod">
           {imgSrc && (
             <img
               src={imgSrc}          
             />)
           }
+          </div>
+          
           <div>
-            <button onClick={endCapture}>End Drive</button>
+            <button onClick={endCapture} className="street-button">End Drive</button>
           </div>
         </div>
+        </div>
       </header>
+
+      <div className='vod'>
       {webcam &&
         <Webcam
           muted={false}
@@ -125,6 +136,7 @@ function App() {
           // videoConstraints={videoConstraints}
         />
       }
+      </div>
     </div>
   );
 }
