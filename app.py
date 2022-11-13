@@ -9,6 +9,8 @@ from flask import Response as FlaskResponse
 from flask import jsonify
 import json
 from dump_table import dump_rows as dr
+from send_msg import send_message
+from decimal import *
 
 
 creds = yaml.safe_load(open("creds.yaml", "r"))
@@ -78,6 +80,50 @@ def sign_in():
 
 
         # need to verify number either way
+def getOldTime(number):
+    with conn.cursor() as c:
+        #get the old amount of time driven
+        table_name = 'LEADERBOARD'
+        c.execute(f'SELECT time FROM {table_name} WHERE number=\'{number}\';')
+        time = c.fetchall()
+        # print(user)
+        conn.commit()
+        oldTime = float(time[0][0])
+    return oldTime
+
+def updateLeaderboard(hoursDriven, oldTime, number):
+    # number = str(session['number'])
+    updatedHours = hoursDriven + oldTime
+    with conn.cursor() as c:
+        table_name = 'LEADERBOARD'
+        c.execute(f'UPDATE {table_name} SET time = \'{updatedHours}\'WHERE number=\'{number}\';')
+        # c.execute(f'UPDATE {table_name} SET numdrives = \'{updatedHours}\'WHERE number=\'{number}\';')
+        # time = c.fetchall()
+        # print(user)
+        conn.commit()
+    with conn.cursor() as c:
+        table_name = 'LEADERBOARD'
+        #THIS DOESNT WORK BECAUSE TIME IS A VARCHAR AND NOT AN INT/DOUBLE
+        c.execute(f'SELECT COUNT(name) FROM {table_name} WHERE number!=\'{number}\' AND time > \'{updatedHours}\';')
+        result = c.fetchall()
+        # print(user)
+        conn.commit()
+        print(result)
+        above = result[0][0]
+        toSend = f'You added {hoursDriven} time of safe driving. There are now {above} people ahead of you on the leaderboard! Keep it up!'
+        send_message(toSend, number)
+
+    
+
+@app.route('/end_drive', methods = ["POST"])
+def end():
+    # number = str(session['number'])
+    number = "7817388373"
+    hoursDriven = request.json['hoursDriven']
+    # badTime = request.json['hoursDriven']
+    oldTime = getOldTime(number)
+    #update leaderboard
+    updateLeaderboard(hoursDriven, oldTime, number)
 
 @app.route('/landing', methods = ["GET"])
 def landing():

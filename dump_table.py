@@ -5,7 +5,7 @@ def dump_rows():
     conn = psycopg2.connect(creds["DATABASE_URL"])
     table_name = 'LEADERBOARD'
     with conn.cursor() as c:
-        c.execute(f'SELECT * FROM {table_name}')
+        c.execute(f'SELECT * FROM {table_name} ORDER BY time DESC LIMIT 5;')
         users = c.fetchall()
         conn.commit()
         f = open('temp.csv', 'w')
