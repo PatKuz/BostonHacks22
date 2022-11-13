@@ -219,9 +219,6 @@ def live():
         
 
         retval, buffer = cv2.imencode('.jpg', frame)
-
-        # z = base64.b64encode(frame.tobytes())
-        # b = "data:image/jpeg;base64,/9j/" + z.decode("utf-8") 
         b = base64.b64encode(buffer)
         b = "data:image/jpeg;base64," + b.decode("utf-8") 
 
