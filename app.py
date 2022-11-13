@@ -197,7 +197,7 @@ yawnModel = keras.models.load_model('yawn.h5')
 @app.route('/live', methods=['POST'])
 def live():
     #take in the image and compare it to the model
-
+    
     print(f'request: {request}')
     # print(f'request form: {request.form}')
     # print(f'request.values: {request.values}')
@@ -249,8 +249,9 @@ def live():
     if yawn_pred < 0.2 and eyes_pred < 0.5:
         print('asleep')
         asleep = True
-        # number = sessesion['number']
-        number='9788065553'
+        number = session['number']
+        # number='9788065553'
+        print(f'number: {number}')
         print('going to send warning')
         # send_warning(number)
 
