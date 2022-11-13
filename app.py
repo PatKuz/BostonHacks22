@@ -8,6 +8,8 @@ import io
 from flask import Response as FlaskResponse
 from flask import jsonify
 import json
+from dump_table import dump_rows as dr
+
 
 creds = yaml.safe_load(open("creds.yaml", "r"))
 
@@ -79,7 +81,14 @@ def sign_in():
 
 @app.route('/landing', methods = ["GET"])
 def landing():
-    number = session['number']
+    table_name = 'USERS'
+    number = str(session['number'])
+    with conn.cursor() as c:
+        c.execute(f'SELECT * FROM {table_name} WHERE number=\'{number}\';')
+        user = c.fetchall()
+        # print(user)
+        conn.commit()
+        name = user[0][1]
     return render_template('landing.html',name=name)
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -186,11 +195,19 @@ def verify():
             else:
                 print(f'The user exists, res: {res}')
                 #there is a user so send them to logged in page
-                return redirect(url_for('landing'))      
-    else:
+                return redirect(url_for('landing'))   
+    elif status == 'pending':
         #not approved
         print(status)
-        print('not aproved')
+        print('not approved')
+        return render_template('index.html')
+    else:
+        print('.')     
+
+@app.route('/leaderboard', methods=['GET'])
+def leaderboard():
+    dr()
+    return render_template('leaderboard.html')
 
 
     # print('is a new user')
