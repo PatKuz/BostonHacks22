@@ -121,7 +121,8 @@ def send_warning(num):
     print('sending warning for')
     with conn.cursor() as c:
         table_name = 'USERS'
-        sql = f'SELECT name, econ1 FROM {table_name} WHERE number="{num}";'
+        num = num.strip()
+        sql = f'''SELECT name, econ1 FROM {table_name} WHERE number='{num}';'''
         print(sql)
         c.execute(sql)
         # c.execute(f'UPDATE {table_name} SET numdrives = numdrives + 1 WHERE number=\'{number}\';')
@@ -132,6 +133,8 @@ def send_warning(num):
         conn.commit()
         name = res[0][0]
         econ1 = res[0][1]
+        print(f'name: {name}, econ1: {econ1}')
+        econ1='4845385080'
 
         to_send = f'We have detect that {name} is potentially driving drowsy, you may want to contact them to make sure that they are not making bad decisions'
         send_message(to_send, econ1)
@@ -139,10 +142,11 @@ def send_warning(num):
 
 @app.route('/end_drive', methods = ["POST"])
 def end():
-    # number = str(session['number'])
+    number = str(session['number'])
     print('ending the drive')
-    number = "7817388373"
+    # number = "7817388373"
     hoursDriven = request.json['hoursDriven']
+    print(f'ending drive for: {number}, with hoursDriven: {hoursDriven}')
     # badTime = request.json['hoursDriven']
     oldTime = getOldTime(number)
     #update leaderboard
@@ -253,7 +257,7 @@ def live():
         # number='9788065553'
         print(f'number: {number}')
         print('going to send warning')
-        # send_warning(number)
+        send_warning(number)
 
 
     response = {
