@@ -228,11 +228,11 @@ def live():
 
         yawn_pred = yawnModel.predict(face_array/255, verbose=0).item()
         yawn_text = "Mouth: Open" if yawn_pred < 0.2 else "Mouth: Closed"
-        cv2.putText(frame, yawn_text, (frame.shape[1]-250,frame.shape[0]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+        cv2.putText(frame, yawn_text, (frame.shape[1]-250,frame.shape[0]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (50, 203, 241), 2)
 
         eyes_pred = eyesModel.predict(face_array/255, verbose=0).item()
         eyes_text = "Eyes: Closed" if eyes_pred < 0.50 else "Eyes: Open"
-        cv2.putText(frame, eyes_text, (25,frame.shape[0]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+        cv2.putText(frame, eyes_text, (25,frame.shape[0]-50), cv2.FONT_HERSHEY_SIMPLEX, 1, (50, 203, 241), 2)
 
         frame = cv2.rectangle(frame, (lx, ly), (la, lb), (0, 255, 0), 2)
         
