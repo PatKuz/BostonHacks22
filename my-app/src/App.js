@@ -79,7 +79,10 @@ function App() {
 
   const capture = React.useCallback(() => {
     console.log('running: ' + running)
-      console.log('in loop')
+      if(!webcam){
+        return;
+      }console.log('in loop')
+      
       const imageSrc = webcamRef.current.getScreenshot();
       console.log('in here')
       console.log(imageSrc)
