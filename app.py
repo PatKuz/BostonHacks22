@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, url_for, redirect, session
 import yaml
 import psycopg2
 from auth import start_verify, check_verify
+from dump_table import dump_rows as dr
 
 
 creds = yaml.safe_load(open("creds.yaml", "r"))
@@ -178,6 +179,11 @@ def verify():
         return render_template('index.html')
     else:
         print('.')     
+
+@app.route('/leaderboard', methods=['GET'])
+def leaderboard():
+    dr()
+    return render_template('leaderboard.html')
 
 
     # print('is a new user')
