@@ -117,11 +117,30 @@ def updateLeaderboard(hoursDriven, oldTime, number):
         toSend = f'You added {hoursDriven} time of safe driving. There are now {above} people ahead of you on the leaderboard! Keep it up!'
         send_message(toSend, number)
 
+def send_warning(num):
+    print('sending warning for')
+    with conn.cursor() as c:
+        table_name = 'USERS'
+        sql = f'SELECT name, econ1 FROM {table_name} WHERE number="{num}";'
+        print(sql)
+        c.execute(sql)
+        # c.execute(f'UPDATE {table_name} SET numdrives = numdrives + 1 WHERE number=\'{number}\';')
+        # c.execute(f'UPDATE {table_name} SET numdrives = \'{updatedHours}\'WHERE number=\'{number}\';')
+        res = c.fetchall()
+        print(res)
+        # print(user)
+        conn.commit()
+        name = res[0][0]
+        econ1 = res[0][1]
+
+        to_send = f'We have detect that {name} is potentially driving drowsy, you may want to contact them to make sure that they are not making bad decisions'
+        send_message(to_send, econ1)
     
 
 @app.route('/end_drive', methods = ["POST"])
 def end():
     # number = str(session['number'])
+    print('ending the drive')
     number = "7817388373"
     hoursDriven = request.json['hoursDriven']
     # badTime = request.json['hoursDriven']
@@ -225,8 +244,19 @@ def live():
         b = base64.b64encode(buffer)
         b = "data:image/jpeg;base64," + b.decode("utf-8") 
 
+    asleep = False
+    print(f'yawn_pres: {yawn_pred}, eyes_pred: {eyes_pred}')
+    if yawn_pred < 0.2 and eyes_pred < 0.5:
+        print('asleep')
+        asleep = True
+        # number = sessesion['number']
+        number='9788065553'
+        print('going to send warning')
+        # send_warning(number)
+
+
     response = {
-        'asleep': True,
+        'asleep': asleep,
         'image': b,
     }
     response = json.dumps(response)
