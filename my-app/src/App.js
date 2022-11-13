@@ -126,9 +126,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         {/* <button onClick={capture}>Capture photo</button> */}
-        <div>
-          {asleep && <p>We have detect you are falling asleep</p> }
-        </div>
+        
          <div className="roon-wrap">
           <div className="ran-out-of-names">
               We're Live!
@@ -142,6 +140,10 @@ function App() {
             />)
           }
           </div>
+
+          <div>
+          {asleep && <p>We have detected you are falling asleep</p> }
+        </div>
           
           <div>
             <button onClick={endCapture} className="street-button">End Drive</button>
