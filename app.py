@@ -2,7 +2,12 @@ from flask import Flask, request, render_template, url_for, redirect, session
 import yaml
 import psycopg2
 from auth import start_verify, check_verify
-
+from PIL import Image
+import base64
+import io
+from flask import Response as FlaskResponse
+from flask import jsonify
+import json
 
 creds = yaml.safe_load(open("creds.yaml", "r"))
 
@@ -12,6 +17,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT' #needed to use sessions
 
 
 conn = psycopg2.connect(creds["DATABASE_URL"])
+
 
 @app.route('/')
 def test():
@@ -73,7 +79,8 @@ def sign_in():
 
 @app.route('/landing', methods = ["GET"])
 def landing():
-    return render_template('landing.html')
+    number = session['number']
+    return render_template('landing.html',name=name)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -106,10 +113,27 @@ def live():
     print(f'request: {request}')
     # print(f'request form: {request.form}')
     # print(f'request.values: {request.values}')
-    print(f'request json: {request.get_json()}' )
-    print(f'{request.json["imageSrc"]}')
+    # print(f'request json: {request.get_json()}' )
+    # print(f'{request.json["imageSrc"]}')
+    # with open('test.json', 'w') as f:
+        # f.write(request.json['imageSrc'])
+
+    # ret = json.load(request.json)
+    # print(f'ret: {ret}')
+    # print(f'{type(request.json["imageSrc"])}')
+    b = (request.json['imageSrc'])
+
+    z = b[b.find('/9'):]
+    im = Image.open(io.BytesIO(base64.b64decode(z))).save('result.jpg')
+    print(f'saved')
+
     print('we are here')
-    return True
+    response = {
+        'asleep': True,
+        'image': b,
+    }
+    response = json.dumps(response)
+    return response
 
 @app.route('/verify', methods=['GET', 'Post'])
 def verify():
