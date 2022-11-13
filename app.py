@@ -100,9 +100,10 @@ def live():
     #take in the image and compare it to the model
 
     print(f'request: {request}')
-    print(f'request form: {request.form}')
-    print(f'request.values: {request.values}')
-    print(f'request json {request.get_json()}' )
+    # print(f'request form: {request.form}')
+    # print(f'request.values: {request.values}')
+    print(f'request json: {request.get_json()}' )
+    print(f'{request.json["imageSrc"]}')
     print('we are here')
     return True
 
