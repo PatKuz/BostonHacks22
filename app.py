@@ -71,6 +71,10 @@ def sign_in():
 
         # need to verify number either way
 
+@app.route('/landing', methods = ["GET"])
+def landing():
+    return render_template('landing.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
@@ -158,7 +162,7 @@ def verify():
             else:
                 print(f'The user exists, res: {res}')
                 #there is a user so send them to logged in page
-                return True       
+                return redirect(url_for('landing'))      
     else:
         #not approved
         print(status)
